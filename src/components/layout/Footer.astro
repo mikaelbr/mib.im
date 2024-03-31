@@ -1,0 +1,62 @@
+---
+import { Icon } from 'astro-icon/components'
+import { getAllPosts, getPopularTags } from 'src/utils/post'
+import Button from '../Button.astro'
+
+const allPosts = await getAllPosts()
+const popularTags = getPopularTags(allPosts)
+---
+
+<footer class='mx-auto mt-24 w-full'>
+	<div class='border-t border-border pt-5'>
+		{
+			popularTags.length > 0 && (
+				<div class='mb-8 flex flex-col gap-2 font-medium'>
+					<h2>Popular tags</h2>
+					<ul class='text-bgColor flex flex-wrap gap-2'>
+						{popularTags.map((tag) => (
+							<li>
+								<Button title={tag} href={`/tags/${tag}/`} style='pill' />
+							</li>
+						))}
+					</ul>
+				</div>
+			)
+		}
+
+		<div
+			class='flex flex-col items-center gap-y-3 sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-y-0'
+		>
+			<div class='flex gap-x-4 text-sm'>
+				<a
+					class='inline-flex gap-x-2 text-gray-600 hover:text-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+					href='/privacy'>Privacy</a
+				>
+				<p class=''>© 2024 Mikael Brevik.</p>
+			</div>
+
+			<div class='flex items-center justify-between'>
+				<div class='flex items-center gap-x-4'>
+					<a
+						class='inline-block text-muted-foreground transition-all hover:text-muted-foreground/75'
+						href='https://github.com/mikaelbr'
+					>
+						<Icon name='ph:github-logo-fill' size={24} title='Github' />
+					</a>
+					<a
+						class='inline-block text-muted-foreground transition-all hover:text-muted-foreground/75'
+						href='https://twitter.com/mikaelbrevik'
+					>
+						<Icon name='ph:twitter-logo-fill' size={24} title='X (Twitter)' />
+					</a>
+					<a
+						class='inline-block text-muted-foreground transition-all hover:text-muted-foreground/75'
+						href='https://www.linkedin.com/in/mikaelbrevik/'
+					>
+						<Icon name='ph:linkedin-logo-fill' size={24} title='Linkedin' />
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
