@@ -20,7 +20,9 @@ const MAX_POSTS = 10;
 const allPosts = await getAllPosts();
 const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
 
+const MAX_PRESENTATIONS = 4;
 const allPresentations = await getAllPresentations();
+const allPresentationsPri = allPresentations.slice(0, MAX_PRESENTATIONS);
 
 const podcasts = await getPodcastData([
   'https://feeds.simplecast.com/UBBVMPjb',
@@ -102,7 +104,22 @@ const podcasts = await getPodcastData([
       )
     }
 
-    <Section title='Selected presentations'>
+    <Section title='Selected Presentations'>
+      <div class='grid grid-cols-1 gap-3 sm:grid-cols-2'>
+        {
+          allPresentationsPri.map((p) => (
+            <PresentationCard href={p.data.url} content={p} class='w-full' />
+          ))
+        }
+      </div>
+      <!-- <div>
+        <Button title='See more presentations' href='/blog'>
+          <Icon name='ph:arrow-right-bold' slot='icon-after' />
+        </Button>
+      </div> -->
+    </Section>
+
+    <Section title='Selected projects'>
       <div class='flex flex-col gap-y-3 sm:flex-row sm:gap-x-3 sm:gap-y-0'>
         <ProjectCard
           href='https://www.google.com'
@@ -120,17 +137,6 @@ const podcasts = await getPodcastData([
           altText='Lorem, ipsum dolor sit'
           class='w-full sm:w-1/2'
         />
-      </div>
-      <div>
-        <Button title='See all projects on Github' href='/blog'>
-          <Icon name='ph:arrow-right-bold' slot='icon-after' />
-        </Button>
-      </div>
-    </Section>
-
-    <Section title='Selected Projects'>
-      <div class='grid grid-cols-1 gap-3 sm:grid-cols-2'>
-        {allPresentations.map((p) => <PresentationCard href={'#'} content={p} class='w-full' />)}
       </div>
       <div>
         <Button title='See all projects on Github' href='/blog'>

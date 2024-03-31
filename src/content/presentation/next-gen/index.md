@@ -7,7 +7,7 @@ conference:
   url: https://ndcoslo.com/
 publishDate: '04 July 2023'
 language: 'en'
-sort: 5
+sort: 1
 coverImage:
   src: './cover.jpeg'
   alt: 'Mikael Brevik at NDC 2023'

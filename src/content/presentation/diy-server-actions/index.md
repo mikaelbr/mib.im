@@ -1,18 +1,18 @@
 ---
-title: 'Decoding Frontend Architectures'
-description: 'Podcast discussion on server first architecture thinking'
-url: https://www.youtube.com/watch?v=Rz3oFviV-n4
+title: 'DIY Next.js Server Actions'
+description: 'DIY Server Actions and intro to server first architecture thinking'
+url: https://vimeo.com/882856707
 conference:
-  name: Code Ryan Podcast
+  name: TDC 2023
   url: https://trondheimdc.no/
 publishDate: '04 July 2023'
-language: 'en'
-sort: 5
+language: 'no'
+sort: 10
 coverImage:
   src: './cover.jpeg'
-  alt: 'Mikael Brevik at the podcast Code Ryan'
+  alt: 'Mikael Brevik at TDC 2023'
 ---
 
-Mikael takes us on a journey through his tech career, revealing the pivotal moments that led him to specialize in frontend architectures. Delving into the heart of the matter, Mikael explains the essence of frontend architecture—unveiling how it shapes the very foundation of modern web development.
+Med server first-arkitektur som former det moderne landskapet for webutvikling, introduserer det Server Actions i Next.js. En tilsynelatende magisk måte å implementere progressive enhancement og RPC. Som den maskerte magikeren vil vi avsløre hemmelighetene. La oss avmystifisere gjennom re-implementering og «gjør det selv”-tankegang.
 
-We explore the intriguing dichotomy between Single Page Applications (SPAs) and Static Sites, dissecting their respective strengths and weaknesses, from dynamic user experiences to SEO challenges
+Denne kode-rike sesjonen vil lære deg om React Server Components, Server Actions, progressive enhancement, RPC; og gi deg en dypere forståelse av hvordan de samhandler med moderne nettlesere.

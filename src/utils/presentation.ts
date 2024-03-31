@@ -9,6 +9,6 @@ export function sortPresentation(
   presentations: Array<CollectionEntry<'presentation'>>,
 ): Array<CollectionEntry<'presentation'>> {
   return presentations.sort((a, b) => {
-    return b.data.sort - a.data.sort;
+    return a.data.sort - b.data.sort;
   });
 }
