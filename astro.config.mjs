@@ -10,30 +10,41 @@ import { expressiveCodeOptions } from './src/site.config';
 import icon from 'astro-icon';
 import vercel from '@astrojs/vercel/serverless';
 
-
 // https://astro.build/config
 export default defineConfig({
   site: 'https://example.me',
-  integrations: [expressiveCode(expressiveCodeOptions), tailwind({
-    applyBaseStyles: false
-  }), sitemap(), mdx(), icon()],
+  integrations: [
+    expressiveCode(expressiveCodeOptions),
+    tailwind({
+      applyBaseStyles: false,
+    }),
+    sitemap(),
+    mdx(),
+    icon(),
+  ],
   markdown: {
     remarkPlugins: [remarkUnwrapImages, remarkReadingTime],
-    rehypePlugins: [[rehypeExternalLinks, {
-      target: '_blank',
-      rel: ['nofollow, noopener, noreferrer']
-    }]],
+    rehypePlugins: [
+      [
+        rehypeExternalLinks,
+        {
+          target: '_blank',
+          rel: ['nofollow, noopener, noreferrer'],
+        },
+      ],
+    ],
     remarkRehype: {
       footnoteLabelProperties: {
-        className: ['']
-      }
-    }
+        className: [''],
+      },
+    },
   },
   prefetch: true,
   output: 'server',
   adapter: vercel({
+    imageService: true,
     webAnalytics: {
-      enabled: true
-    }
-  })
+      enabled: true,
+    },
+  }),
 });
