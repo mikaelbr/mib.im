@@ -42,7 +42,7 @@ export default defineConfig({
   prefetch: true,
   output: 'server',
   adapter: vercel({
-    imageService: true,
+    // imageService: true,
     webAnalytics: {
       enabled: true,
     },
