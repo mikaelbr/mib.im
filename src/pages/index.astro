@@ -7,7 +7,7 @@ import Section from '../components/Section.astro';
 import PageLayout from '../layouts/BaseLayout.astro';
 
 import { Image } from 'astro:assets';
-import astro from '../assets/bulb.png';
+import mikaelBrevik from '../assets/mikaelbrevik.jpg';
 
 import { getAllPosts, sortMDByDate } from '@/utils';
 import Button from '@/components/Button.astro';
@@ -35,9 +35,9 @@ const podcasts = await getPodcastData([
   <div class='flex w-full flex-col gap-y-10'>
     <section class='flex flex-col items-center gap-y-7'>
       <Image
-        src={astro}
-        alt='profile photo'
-        class='h-28 w-auto rounded-full bg-[#98fff3] p-2'
+        src={mikaelBrevik}
+        alt='Photo of Mikael brevik'
+        class='h-56 w-auto rounded-full bg-[#98fff3] p-1'
         loading='eager'
       />
 
@@ -61,7 +61,12 @@ const podcasts = await getPodcastData([
     </section>
 
     <Section title='Whoami'>
-      <p class='text-muted-foreground'>Mikael Brevik is a developer.</p>
+      <p class='text-muted-foreground'>
+        Enthusiastic developer from Norway interested in programming languages and with an
+        everlasting love of web technologies. Maintainer of open source projects, podcast host of
+        BartJS Podcast, Kortslutning and more, maker of programming videos, writer of blogposts. CTO
+        and co-founder of <a href='https://www.variant.no'>Variant</a>.
+      </p>
     </Section>
     {
       allPostsByDate.length > 0 && (
