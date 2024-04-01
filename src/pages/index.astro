@@ -39,6 +39,8 @@ const podcasts = await getPodcastData([
         alt='Photo of Mikael brevik'
         class='h-56 w-auto rounded-full bg-[#98fff3] p-1'
         loading='eager'
+        widths={[120, 240, 360]}
+        sizes={`(max-width: 240px) 120px, (max-width: 360px) 240px, 360px`}
       />
 
       <div class='flex flex-col items-center gap-y-4'>
