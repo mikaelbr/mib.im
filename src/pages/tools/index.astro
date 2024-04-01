@@ -1,87 +1,139 @@
 ---
-import PageLayout from '@/layouts/BaseLayout.astro'
-import ToolSection from '@/components/ToolSection.astro'
-import Button from '@/components/Button.astro'
+import Button from '@/components/Button.astro';
+import ToolSection from '@/components/ToolSection.astro';
+import PageLayout from '@/layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
 
-const DESIGN = [
-	{
-		name: 'Figma',
-		description: 'Design Tool',
-		href: 'https://www.figma.com/',
-		iconPath: 'figma',
-		iconBgColour: '#000001'
-	}
-]
+const PODCAST_SETUP = [
+  {
+    name: 'RØDE PODMIC',
+    description: 'Microphone',
+    href: 'https://rode.com/en/microphones/broadcast/podmic',
+    iconPath: 'ph:microphone-bold',
+    iconBgColour: '#000001',
+  },
+  {
+    name: 'Triton FetHead',
+    description: 'Microphone pre-amplifier',
+    href: 'https://www.tritonaudio.com/fethead',
+    iconPath: 'ph:microphone-bold',
+    iconBgColour: '#000001',
+  },
+  {
+    name: 'Focusrite Scarlett 6i6',
+    description: 'Audio Interface',
+    href: 'https://focusrite.com/scarlett',
+    iconPath: 'ph:speaker-simple-high-fill',
+    iconBgColour: '#000001',
+  },
+  {
+    name: 'HifiMan HE-400i',
+    description: 'Daily headphones',
+    href: 'https://www.hifiman.com/products/detail/178',
+    iconPath: 'ph:headphones-bold',
+    iconBgColour: '#000001',
+  },
+  {
+    name: 'Audio Technica ATH-M50X',
+    description: 'Headphones for podcast editing',
+    href: 'https://www.audio-technica.com/en-us/ath-m50x',
+    iconPath: 'ph:headphones-bold',
+    iconBgColour: '#000001',
+  },
+  {
+    name: 'KRK Rokit 5 G3',
+    description: 'Studio monitors',
+    href: 'https://www.krkmusic.com/products/classic-5-powered-studio-monitor-pack',
+    iconPath: 'ph:speaker-hifi-fill',
+    iconBgColour: '#000001',
+  },
+  {
+    name: 'Simplecast',
+    description: 'Podcast Hosting',
+    href: 'https://www.simplecast.com/',
+    iconPath: 'ph:computer-tower-fill',
+    iconBgColour: '#000001',
+  },
+  {
+    name: 'Transistor.fm',
+    description: 'Podcast Hosting',
+    href: 'https://transistor.fm/',
+    iconPath: 'ph:computer-tower-fill',
+    iconBgColour: '#000001',
+  },
+];
 
-const PRODUCTIVITY = [
-	{
-		name: 'Arc',
-		description: 'Browser',
-		href: 'https://arc.net/',
-		iconPath: 'arc',
-		iconBgColour: '#414350'
-	},
-	{
-		name: 'Notion',
-		description: 'Note Taking',
-		href: 'https://www.notion.so/product',
-		iconPath: 'notion',
-		iconBgColour: '#EFEFEE'
-	},
-	{
-		name: 'Obsidian',
-		description: 'Long-form Writing',
-		href: 'https://obsidian.md/',
-		iconPath: 'obsidian',
-		iconBgColour: '#7A3EE8'
-	}
-]
+const VIDEO_SETUP = [
+  {
+    name: 'Sony A7 IV',
+    description: 'Camera',
+    href: 'https://www.sony.co.uk/interchangeable-lens-cameras/products/ilce-7m4?locale=en_GB',
+    iconPath: 'ph:camera-bold',
+    iconBgColour: '#000001',
+  },
+  {
+    name: 'Godox SL60W',
+    description: 'Key light',
+    href: 'https://store.godox.eu/en/led-lamps/160-led-video-light-godox-sl-60w-daylight-6952344210307.html',
+    iconPath: 'ph:headlights-bold',
+    iconBgColour: '#000001',
+  },
+  {
+    name: 'Aputure Light Dome Mini ii',
+    description: 'Light diffuser',
+    href: 'https://www.aputure.com/products/light-dome-mini-ii/',
+    iconPath: 'ph:headlights-bold',
+    iconBgColour: '#000001',
+  },
+];
+
+const TOOLS = [
+  {
+    name: 'Epomaker TH66',
+    description: 'Keyboard. Cannot remember switches',
+    href: 'https://epomaker.com/products/epomaker-th66-regular-version',
+    iconPath: 'ph:keyboard-fill',
+    iconBgColour: '#414350',
+  },
+];
 
 const DEVELOPMENT = [
-	{
-		name: 'VS Code',
-		description: 'IDE',
-		href: 'https://code.visualstudio.com/',
-		iconPath: 'vscode',
-		iconBgColour: '#2C2C32'
-	},
-	{
-		name: 'ChatGPT',
-		description: 'AI',
-		href: 'https://chat.openai.com/',
-		iconPath: 'chatgpt',
-		iconBgColour: '#06A67F'
-	}
-]
+  {
+    name: 'VS Code',
+    description: 'Editor',
+    href: 'https://code.visualstudio.com/',
+    iconPath: 'vscode',
+    iconBgColour: '#2C2C32',
+  },
+  {
+    name: 'Reycast',
+    description: '',
+    href: 'https://reycast.com/',
+    iconPath: 'chatgpt',
+    iconBgColour: '#06A67F',
+  },
+];
 ---
 
 <PageLayout meta={{ title: 'Home' }}>
-	<div class='w-full'>
-		<Button title='Back' href='/' style='button'>
-			<svg
-				xmlns='http://www.w3.org/2000/svg'
-				width='14'
-				height='14'
-				viewBox='0 0 24 24'
-				slot='icon-before'
-			>
-				<path
-					fill='currentColor'
-					d='m6.921 12.5l5.792 5.792L12 19l-7-7l7-7l.713.708L6.921 11.5H19v1z'
-				>
-				</path>
-			</svg>
-		</Button>
+  <div class='w-full'>
+    <Button title='Back' href='/' style='button'>
+      <Icon name='ph:arrow-left' slot='icon-before' />
+    </Button>
 
-		<div class='mt-5 flex w-full flex-col gap-y-10'>
-			<div>
-				<h1 class='mb-1 text-2xl font-bold'>Tools</h1>
-				<p>Tools and software I use daily</p>
-			</div>
+    <div class='mt-5 flex w-full flex-col gap-y-10'>
+      <div>
+        <h1 class='mb-1 text-2xl font-bold'>Tools and Equipment</h1>
+        <p>
+          Tools, equipment and software I use for creating podcasts and video, and everyday for
+          development.
+        </p>
+      </div>
 
-			<ToolSection title='Design' tools={DESIGN} />
-			<ToolSection title='Productivity' tools={PRODUCTIVITY} />
-			<ToolSection title='Development' tools={DEVELOPMENT} />
-		</div>
-	</div>
+      <ToolSection title='Podcast setup' tools={PODCAST_SETUP} />
+      <ToolSection title='Video setup' tools={VIDEO_SETUP} />
+      <ToolSection title='Tools' tools={TOOLS} />
+      <ToolSection title='Development' tools={DEVELOPMENT} />
+    </div>
+  </div>
 </PageLayout>
