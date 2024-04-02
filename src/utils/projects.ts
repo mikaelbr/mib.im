@@ -2,8 +2,6 @@ import { LRUCache } from 'lru-cache';
 
 const cache = new LRUCache<string, RepoStats>({
   max: 500,
-  maxSize: 5000,
-
   // how long to live in ms
   ttl: 1000 * 60 * 60,
 });
