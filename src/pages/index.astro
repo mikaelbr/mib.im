@@ -2,7 +2,6 @@
 import PostPreview from '@/components/blog/PostPreview.astro';
 import Card from '../components/Card.astro';
 import Label from '../components/Label.astro';
-// import ProjectCard from '../components/ProjectCard.astro';
 import Section from '../components/Section.astro';
 import PageLayout from '../layouts/BaseLayout.astro';
 
@@ -15,6 +14,8 @@ import { Icon } from 'astro-icon/components';
 import { getPodcastData } from 'src/utils/pod';
 import { getAllPresentations } from 'src/utils/presentation';
 import PresentationCard from '@/components/PresentationCard.astro';
+import { getMultipleRepoStats } from 'src/utils/projects';
+import ProjectCard from '@/components/ProjectCard.astro';
 
 const MAX_POSTS = 10;
 const allPosts = await getAllPosts();
@@ -28,6 +29,14 @@ const podcasts = await getPodcastData([
   'https://feeds.simplecast.com/UBBVMPjb',
   'https://feeds.transistor.fm/bartjs-podcast',
   'https://feeds.transistor.fm/lesehesten-utvikling',
+]);
+
+const projects = await getMultipleRepoStats([
+  'mikaelbr/node-notifier',
+  'omniscientjs/omniscient',
+  'open-source-ideas/ideas',
+  'mikaelbr/marked-terminal',
+  'mikaelbr/awesome-es2015-proxy',
 ]);
 ---
 
@@ -126,30 +135,28 @@ const podcasts = await getPodcastData([
       </div> -->
     </Section>
 
-    <!-- <Section title='Selected projects'>
-      <div class='flex flex-col gap-y-3 sm:flex-row sm:gap-x-3 sm:gap-y-0'>
-        <ProjectCard
-          href='https://www.google.com'
-          heading='Consectetur'
-          subheading='Lorem ipsum dolor sit amet consectetur adipisicing elit.'
-          imagePath='/src/assets/coming-soon.png'
-          altText='Example'
-          class='w-full sm:w-1/2'
-        />
-        <ProjectCard
-          as='div'
-          heading='Coming soon...'
-          subheading=''
-          imagePath='/src/assets/coming-soon.png'
-          altText='Lorem, ipsum dolor sit'
-          class='w-full sm:w-1/2'
-        />
-      </div>
+    <Section title='Selected Presentations'>
+      {
+        projects.length == 0 ? (
+          <p class='text-muted-foreground'>Error: No projects found show</p>
+        ) : (
+          <div class='grid grid-cols-1 gap-3 sm:grid-cols-2'>
+            {projects.map((p) => (
+              <ProjectCard
+                project={p}
+                imagePath='/src/assets/coming-soon.png'
+                altText='Example'
+                class='w-full'
+              />
+            ))}
+          </div>
+        )
+      }
       <div>
         <Button title='See all projects on Github' href='/blog'>
           <Icon name='ph:arrow-right-bold' slot='icon-after' />
         </Button>
       </div>
-    </Section> -->
+    </Section>
   </div>
 </PageLayout>
