@@ -1,0 +1,40 @@
+---
+import { getMultipleRepoStats } from 'src/utils/projects';
+import Section from '../../components/Section.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Button from '../../components/Button.astro';
+import { Icon } from 'astro-icon/components';
+
+import markedTerminal from './images/marked-terminal.png';
+import proxyFun from './images/proxy-fun.png';
+import omniscient from './images/omniscient.png';
+import osii from './images/osii.png';
+import nn from './images/node-notifier.png';
+
+const projects = await getMultipleRepoStats([
+  { repo: 'mikaelbr/node-notifier', image: nn },
+  { repo: 'omniscientjs/omniscient', image: omniscient },
+  { repo: 'open-source-ideas/ideas', image: osii },
+  { repo: 'mikaelbr/marked-terminal', image: markedTerminal },
+  { repo: 'mikaelbr/awesome-es2015-proxy', image: proxyFun },
+]);
+---
+
+<Section title='Selected Projects'>
+  {
+    projects.length == 0 ? (
+      <p class='text-muted-foreground'>Error: No projects found show</p>
+    ) : (
+      <div class='grid grid-cols-1 gap-3 sm:grid-cols-2'>
+        {projects.map((p) => (
+          <ProjectCard project={p} class='w-full' />
+        ))}
+      </div>
+    )
+  }
+  <div>
+    <Button title='See all projects on Github' href='https://github.com/mikaelbr'>
+      <Icon name='ph:arrow-right-bold' slot='icon-after' />
+    </Button>
+  </div>
+</Section>

@@ -8,14 +8,13 @@ import PageLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import mikaelBrevik from '../assets/mikaelbrevik.jpg';
 
-import { getAllPosts, sortMDByDate } from '@/utils';
 import Button from '@/components/Button.astro';
+import PresentationCard from '@/components/PresentationCard.astro';
+import ProjectSection from 'src/sections/Project/ProjectSection.astro';
+import { getAllPosts, sortMDByDate } from '@/utils';
 import { Icon } from 'astro-icon/components';
 import { getPodcastData } from 'src/utils/pod';
 import { getAllPresentations } from 'src/utils/presentation';
-import PresentationCard from '@/components/PresentationCard.astro';
-import { getMultipleRepoStats } from 'src/utils/projects';
-import ProjectCard from '@/components/ProjectCard.astro';
 
 const MAX_POSTS = 10;
 const allPosts = await getAllPosts();
@@ -29,14 +28,6 @@ const podcasts = await getPodcastData([
   'https://feeds.simplecast.com/UBBVMPjb',
   'https://feeds.transistor.fm/bartjs-podcast',
   'https://feeds.transistor.fm/lesehesten-utvikling',
-]);
-
-const projects = await getMultipleRepoStats([
-  'mikaelbr/node-notifier',
-  'omniscientjs/omniscient',
-  'open-source-ideas/ideas',
-  'mikaelbr/marked-terminal',
-  'mikaelbr/awesome-es2015-proxy',
 ]);
 ---
 
@@ -135,28 +126,6 @@ const projects = await getMultipleRepoStats([
       </div> -->
     </Section>
 
-    <Section title='Selected Projects'>
-      {
-        projects.length == 0 ? (
-          <p class='text-muted-foreground'>Error: No projects found show</p>
-        ) : (
-          <div class='grid grid-cols-1 gap-3 sm:grid-cols-2'>
-            {projects.map((p) => (
-              <ProjectCard
-                project={p}
-                imagePath='/src/assets/coming-soon.png'
-                altText='Example'
-                class='w-full'
-              />
-            ))}
-          </div>
-        )
-      }
-      <div>
-        <Button title='See all projects on Github' href='https://github.com/mikaelbr'>
-          <Icon name='ph:arrow-right-bold' slot='icon-after' />
-        </Button>
-      </div>
-    </Section>
+    <ProjectSection />
   </div>
 </PageLayout>

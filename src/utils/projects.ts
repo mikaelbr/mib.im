@@ -1,3 +1,4 @@
+import type { ImageMetadata } from 'astro';
 import { LRUCache } from 'lru-cache';
 
 const cache = new LRUCache<string, RepoStats>({
@@ -16,6 +17,7 @@ export type RepoStats = {
   url: string;
   stars: HumanizedNumber;
   forks: HumanizedNumber;
+  image?: ImageMetadata;
   description: string;
 };
 
@@ -58,10 +60,10 @@ type RepoDto = {
   network_count: number;
   subscribers_count: number;
 };
-export async function getRepoStats(repo: `${string}/${string}`): Promise<RepoStats | undefined> {
-  if (cache.has(repo)) return cache.get(repo)!;
+export async function getRepoStats(repo: RepoInput): Promise<RepoStats | undefined> {
+  if (cache.has(repo.repo)) return cache.get(repo.repo)!;
 
-  const response = await fetch(`https://api.github.com/repos/${repo}`);
+  const response = await fetch(`https://api.github.com/repos/${repo.repo}`);
   if (!response.ok) return undefined;
   const data = (await response.json()) as RepoDto;
 
@@ -71,9 +73,10 @@ export async function getRepoStats(repo: `${string}/${string}`): Promise<RepoSta
     url: data.html_url,
     stars: numberToHumanizedNumber(data.stargazers_count),
     forks: numberToHumanizedNumber(data.forks_count),
+    image: repo.image,
   };
 
-  cache.set(repo, obj);
+  cache.set(repo.repo, obj);
   return obj;
 }
 
@@ -83,7 +86,12 @@ function numberToHumanizedNumber(number: number): HumanizedNumber {
   return { value: number, short: `${(number / 1000000).toFixed(1)}M` };
 }
 
-export async function getMultipleRepoStats(repo: `${string}/${string}`[]): Promise<RepoStats[]> {
+type RepoInput = {
+  repo: `${string}/${string}`;
+  image: ImageMetadata;
+};
+
+export async function getMultipleRepoStats(repo: RepoInput[]): Promise<RepoStats[]> {
   // return [
   //   {
   //     name: 'mikaelbr/node-notifier',
