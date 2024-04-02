@@ -4,6 +4,8 @@ import type { ImageMetadata } from 'astro';
 import { cn } from '@/utils';
 import type { RepoStats } from 'src/utils/projects';
 import type { HTMLTag, Polymorphic } from 'astro/types';
+import Label from './Label.astro';
+import Icon from 'node_modules/astro-icon/components/Icon.astro';
 
 type Props<Tag extends HTMLTag> = Polymorphic<{
   as: Tag;
@@ -34,7 +36,7 @@ if (imagePath && !images[imagePath])
       <Image
         src={images[imagePath]()}
         alt={altText}
-        class='h-48 w-full rounded-2xl rounded-bl-none rounded-br-none object-cover'
+        class='h-24 w-full rounded-2xl rounded-bl-none rounded-br-none object-cover'
         loading='eager'
       />
     )
@@ -42,6 +44,15 @@ if (imagePath && !images[imagePath])
   <div class='flex flex-col gap-y-0.5 px-5 py-4'>
     <h1 class='text-lg font-medium'>{project.name}</h1>
     <p class='text-muted-foreground'>{project.description}</p>
+
+    <div class='mt-2 flex justify-start gap-4'>
+      <Label title={project.stars.short} aria-label={`${project.stars.value} stars`}>
+        <Icon name='ph:star-bold' slot='icon' />
+      </Label>
+      <Label title={project.forks.short} aria-label={`${project.forks.value} forks`}>
+        <Icon name='ph:git-fork-bold' slot='icon' />
+      </Label>
+    </div>
   </div>
 
   <slot />
