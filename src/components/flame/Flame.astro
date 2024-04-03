@@ -13,7 +13,7 @@ const flames = await db
   .where(eq(Flames.slug, slug))
   .get();
 
-const avgFlames = flames?.flameAvg.toLocaleString('en', { maximumFractionDigits: 2 });
+const avgFlames = flames?.flameAvg?.toLocaleString('en', { maximumFractionDigits: 2 }) ?? 1;
 ---
 
 <div class='flex items-center gap-2 px-4 py-8'>
