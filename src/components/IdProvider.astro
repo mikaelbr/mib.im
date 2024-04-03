@@ -1,0 +1,11 @@
+<script is:inline>
+  // Only used to remember Flames
+  let storedId = localStorage.getItem('id') ?? undefined;
+
+  if (!storedId) {
+    storedId = `${Math.random().toString(36).substring(7)}-${Math.random().toString(36).substring(7)}`;
+    localStorage.setItem('id', storedId);
+  }
+
+  document.body.setAttribute('data-id', storedId);
+</script>

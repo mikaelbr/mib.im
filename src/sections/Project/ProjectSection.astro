@@ -1,16 +1,15 @@
 ---
-import { getMultipleRepoStats } from 'src/utils/projects';
-import Section from '../../components/Section.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
-import Button from '../../components/Button.astro';
 import { Icon } from 'astro-icon/components';
+import { getMultipleRepoStats } from 'src/utils/projects';
+import Button from '../../components/Button.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Section from '../../components/Section.astro';
 
 import markedTerminal from './images/marked-terminal.png';
-import proxyFun from './images/proxy-fun.png';
+import nn from './images/node-notifier.png';
 import omniscient from './images/omniscient.png';
 import osii from './images/osii.png';
-import nn from './images/node-notifier.png';
-import { cn } from '@/utils';
+import proxyFun from './images/proxy-fun.png';
 
 const { class: className, title } = Astro.props;
 

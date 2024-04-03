@@ -10,41 +10,32 @@ import { expressiveCodeOptions } from './src/site.config';
 import icon from 'astro-icon';
 import vercel from '@astrojs/vercel/serverless';
 
+import db from "@astrojs/db";
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://mib.im',
-  integrations: [
-    expressiveCode(expressiveCodeOptions),
-    tailwind({
-      applyBaseStyles: false,
-    }),
-    sitemap(),
-    mdx(),
-    icon(),
-  ],
+  integrations: [expressiveCode(expressiveCodeOptions), tailwind({
+    applyBaseStyles: false
+  }), sitemap(), mdx(), icon(), db()],
   markdown: {
     remarkPlugins: [remarkUnwrapImages, remarkReadingTime],
-    rehypePlugins: [
-      [
-        rehypeExternalLinks,
-        {
-          target: '_blank',
-          rel: ['nofollow, noopener, noreferrer'],
-        },
-      ],
-    ],
+    rehypePlugins: [[rehypeExternalLinks, {
+      target: '_blank',
+      rel: ['nofollow, noopener, noreferrer']
+    }]],
     remarkRehype: {
       footnoteLabelProperties: {
-        className: [''],
-      },
-    },
+        className: ['']
+      }
+    }
   },
   prefetch: true,
   output: 'server',
   adapter: vercel({
     // imageService: true,
     webAnalytics: {
-      enabled: true,
-    },
-  }),
+      enabled: true
+    }
+  })
 });

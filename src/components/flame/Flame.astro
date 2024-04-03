@@ -1,0 +1,91 @@
+---
+import { cn } from '@/utils';
+import { Icon } from 'astro-icon/components';
+import { Flames, avg, db, eq } from 'astro:db';
+
+const { slug } = Astro.props;
+
+const flames = await db
+  .select({
+    flameAvg: avg(Flames.flames).mapWith(parseFloat),
+  })
+  .from(Flames)
+  .where(eq(Flames.slug, slug))
+  .get();
+
+const avgFlames = flames?.flameAvg.toLocaleString('en', { maximumFractionDigits: 2 });
+---
+
+<div class='flex items-center gap-2 px-4 py-8'>
+  <button
+    id='flame-button'
+    class={cn('inline-flex items-center gap-x-1 text-2xl rounded-3xl transition-all')}
+    aria-label='Flame this post'
+  >
+    <Icon id='ph:fire-simple-light' name='ph:fire-simple-light' />
+    <Icon id='ph:fire-simple' name='ph:fire-simple' style={{ display: 'none' }} />
+    <Icon id='ph:fire-simple-bold' name='ph:fire-simple-bold' style={{ display: 'none' }} />
+    <Icon id='ph:fire-simple-duotone' name='ph:fire-simple-duotone' style={{ display: 'none' }} />
+    <Icon id='ph:fire-simple-fill' name='ph:fire-simple-fill' style={{ display: 'none' }} />
+  </button>
+
+  <span title={`${avgFlames} average flames for this post`}>{avgFlames}</span>
+</div>
+
+<script>
+  const id = document.body.getAttribute('data-id');
+
+  const rating = [
+    'ph:fire-simple-light',
+    'ph:fire-simple',
+    'ph:fire-simple-bold',
+    'ph:fire-simple-duotone',
+    'ph:fire-simple-fill',
+  ];
+
+  const INCREASE_TICK_MS = 500;
+
+  let timer: NodeJS.Timeout | undefined = undefined;
+  let value = 0;
+
+  const flameButton = document.getElementById('flame-button')!;
+  flameButton.addEventListener('mousedown', () => {
+    showIcon(rating[0]);
+    timer = setInterval(function () {
+      value = Math.min(value + 1, rating.length - 1);
+      const icon = rating[value];
+      showIcon(icon);
+    }, INCREASE_TICK_MS);
+  });
+  flameButton.addEventListener('mouseup', () => {
+    console.log('Post value:', value);
+
+    // reset
+    clearTimeout(timer);
+    timer = undefined;
+    value = 0;
+  });
+
+  flameButton.addEventListener('mouseleave', () => {
+    // Ignore setting flames
+    clearTimeout(timer);
+    timer = undefined;
+    value = 0;
+  });
+
+  function setIntervalButAlsoAtFirst(fn: (args: void) => void, ms?: number): NodeJS.Timeout {
+    fn();
+    return setInterval(fn, ms);
+  }
+
+  function showIcon(name: string) {
+    const icons = flameButton.querySelectorAll<SVGElement>('#flame-button svg');
+    icons.forEach((icon) => {
+      if (icon.id === name) {
+        icon.style.display = 'block';
+      } else {
+        icon.style.display = 'none';
+      }
+    });
+  }
+</script>
