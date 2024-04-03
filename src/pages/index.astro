@@ -92,7 +92,7 @@ const podcasts = await getPodcastData([
 
     {
       podcasts.length > 0 && (
-        <Section title='Podcasts'>
+        <Section title='Podcasts' class='animate-in'>
           {podcasts.map((p) => (
             <Card
               as='a'
@@ -111,11 +111,11 @@ const podcasts = await getPodcastData([
       )
     }
 
-    <Section title='Selected Presentations'>
+    <Section title='Selected Presentations' class='animate-in'>
       <div class='grid grid-cols-1 gap-3 sm:grid-cols-2'>
         {
           allPresentationsPri.map((p) => (
-            <PresentationCard href={p.data.url} content={p} class='w-full' />
+            <PresentationCard href={p.data.url} content={p} class=' w-full' />
           ))
         }
       </div>
@@ -126,6 +126,6 @@ const podcasts = await getPodcastData([
       </div> -->
     </Section>
 
-    <ProjectSection />
+    <ProjectSection title='Selected Projects' class='animate-in' />
   </div>
 </PageLayout>

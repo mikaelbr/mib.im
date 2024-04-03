@@ -10,6 +10,9 @@ import proxyFun from './images/proxy-fun.png';
 import omniscient from './images/omniscient.png';
 import osii from './images/osii.png';
 import nn from './images/node-notifier.png';
+import { cn } from '@/utils';
+
+const { class: className, title } = Astro.props;
 
 const projects = await getMultipleRepoStats([
   { repo: 'mikaelbr/node-notifier', image: nn },
@@ -20,7 +23,7 @@ const projects = await getMultipleRepoStats([
 ]);
 ---
 
-<Section title='Selected Projects'>
+<Section title={title} class={className}>
   {
     projects.length == 0 ? (
       <p class='text-muted-foreground'>Error: No projects found show</p>
