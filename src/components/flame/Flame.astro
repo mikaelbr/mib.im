@@ -73,11 +73,6 @@ const avgFlames = flames?.flameAvg.toLocaleString('en', { maximumFractionDigits:
     value = 0;
   });
 
-  function setIntervalButAlsoAtFirst(fn: (args: void) => void, ms?: number): NodeJS.Timeout {
-    fn();
-    return setInterval(fn, ms);
-  }
-
   function showIcon(name: string) {
     const icons = flameButton.querySelectorAll<SVGElement>('#flame-button svg');
     icons.forEach((icon) => {
