@@ -40,7 +40,7 @@ const { headings } = await post.render();
         </div>
 
         <footer>
-          <Flame slug={post.slug} />
+          <Flame slug={post.slug} client:load />
         </footer>
       </article>
     </div>
