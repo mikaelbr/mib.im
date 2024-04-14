@@ -8,6 +8,12 @@ const Flames = defineTable({
     genId: column.text(),
     flames: column.number(),
   },
+  indexes: {
+    genIdSlug: {
+      on: ['genId', 'slug'],
+      unique: true,
+    },
+  },
 });
 
 export default defineDb({

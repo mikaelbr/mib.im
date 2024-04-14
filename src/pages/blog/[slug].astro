@@ -1,25 +1,20 @@
 ---
-export const prerender = true
+import PostLayout from '@/layouts/BlogPost.astro';
+import { getAllPosts } from '@/utils';
 
-import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
+const { slug } = Astro.params;
 
-import PostLayout from '@/layouts/BlogPost.astro'
-import { getAllPosts } from '@/utils'
+const allPost = await getAllPosts();
 
-export const getStaticPaths = (async () => {
-	const blogEntries = await getAllPosts()
-	return blogEntries.map((entry) => ({
-		params: { slug: entry.slug },
-		props: { entry }
-	}))
-}) satisfies GetStaticPaths
+const entry = allPost.find((p) => p.slug === slug);
 
-type Props = InferGetStaticPropsType<typeof getStaticPaths>
+if (!entry) {
+  return Astro.redirect('/404');
+}
 
-const { entry } = Astro.props
-const { Content } = await entry.render()
+const { Content } = await entry.render();
 ---
 
 <PostLayout post={entry}>
-	<Content />
+  <Content />
 </PostLayout>

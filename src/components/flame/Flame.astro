@@ -1,19 +1,30 @@
 ---
 import { cn } from '@/utils';
 import { Icon } from 'astro-icon/components';
-import { Flames, avg, db, eq } from 'astro:db';
+import { Flames, and, db, eq, sum } from 'astro:db';
 
 const { slug } = Astro.props;
 
+let userId = Astro.cookies.get('id')?.value ?? '';
+
+const myFlamesQ = await db
+  .select({
+    flames: Flames.flames,
+  })
+  .from(Flames)
+  .where(and(eq(Flames.slug, slug), eq(Flames.genId, userId)))
+  .get();
+
 const flames = await db
   .select({
-    flameAvg: avg(Flames.flames).mapWith(parseFloat),
+    flameSum: sum(Flames.flames).mapWith(parseInt),
   })
   .from(Flames)
   .where(eq(Flames.slug, slug))
   .get();
 
-const avgFlames = flames?.flameAvg?.toLocaleString('en', { maximumFractionDigits: 2 }) ?? 1;
+const myFlames = myFlamesQ?.flames ?? 0;
+const numFlames = flames?.flameSum ?? 0;
 ---
 
 <div class='flex items-center gap-2 px-4 py-8'>
@@ -21,19 +32,44 @@ const avgFlames = flames?.flameAvg?.toLocaleString('en', { maximumFractionDigits
     id='flame-button'
     class={cn('inline-flex items-center gap-x-1 text-2xl rounded-3xl transition-all')}
     aria-label='Flame this post'
+    data-slug={slug}
+    data-initial-flames={numFlames - myFlames}
+    data-initial-my-flames={myFlames}
   >
-    <Icon id='ph:fire-simple-light' name='ph:fire-simple-light' />
-    <Icon id='ph:fire-simple' name='ph:fire-simple' style={{ display: 'none' }} />
-    <Icon id='ph:fire-simple-bold' name='ph:fire-simple-bold' style={{ display: 'none' }} />
-    <Icon id='ph:fire-simple-duotone' name='ph:fire-simple-duotone' style={{ display: 'none' }} />
-    <Icon id='ph:fire-simple-fill' name='ph:fire-simple-fill' style={{ display: 'none' }} />
+    <Icon
+      id='ph:fire-simple-light'
+      name='ph:fire-simple-light'
+      style={{ display: myFlames == 0 ? 'block' : 'none' }}
+    />
+    <Icon
+      id='ph:fire-simple'
+      name='ph:fire-simple'
+      style={{ display: myFlames == 1 ? 'block' : 'none' }}
+    />
+    <Icon
+      id='ph:fire-simple-bold'
+      name='ph:fire-simple-bold'
+      style={{ display: myFlames == 2 ? 'block' : 'none' }}
+    />
+    <Icon
+      id='ph:fire-simple-duotone'
+      name='ph:fire-simple-duotone'
+      style={{ display: myFlames == 3 ? 'block' : 'none' }}
+    />
+    <Icon
+      id='ph:fire-simple-fill'
+      name='ph:fire-simple-fill'
+      style={{ display: myFlames == 4 ? 'block' : 'none' }}
+    />
   </button>
 
-  <span title={`${avgFlames} average flames for this post`}>{avgFlames}</span>
+  <span title={`${numFlames} flames for this post`}
+    ><span id='num-flames'>{numFlames}</span> flames</span
+  >
 </div>
 
 <script>
-  const id = document.body.getAttribute('data-id');
+  const userId = document.body.getAttribute('data-id');
 
   const rating = [
     'ph:fire-simple-light',
@@ -43,22 +79,44 @@ const avgFlames = flames?.flameAvg?.toLocaleString('en', { maximumFractionDigits
     'ph:fire-simple-fill',
   ];
 
-  const INCREASE_TICK_MS = 500;
+  function postValue(slug: string, flames: number) {
+    return fetch('/api/flames.json', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        slug,
+        userId,
+        flames,
+      }),
+    });
+  }
+
+  const INCREASE_TICK_MS = 300;
 
   let timer: NodeJS.Timeout | undefined = undefined;
-  let value = 0;
+  let value = 1;
 
   const flameButton = document.getElementById('flame-button')!;
+  const initialFlames = parseInt(flameButton.getAttribute('data-initial-my-flames') ?? '0', 10);
+  if (initialFlames > 0) {
+    value = 0;
+  }
+
   flameButton.addEventListener('mousedown', () => {
-    showIcon(rating[0]);
+    showIcon(rating[0], value);
     timer = setInterval(function () {
       value = Math.min(value + 1, rating.length - 1);
       const icon = rating[value];
-      showIcon(icon);
+      showIcon(icon, value);
     }, INCREASE_TICK_MS);
   });
-  flameButton.addEventListener('mouseup', () => {
-    console.log('Post value:', value);
+  flameButton.addEventListener('mouseup', async (e) => {
+    if (!(e.currentTarget instanceof Element)) return;
+    const slug = e.currentTarget.getAttribute('data-slug') ?? '';
+
+    postValue(slug, value);
 
     // reset
     clearTimeout(timer);
@@ -73,8 +131,16 @@ const avgFlames = flames?.flameAvg?.toLocaleString('en', { maximumFractionDigits
     value = 0;
   });
 
-  function showIcon(name: string) {
+  function showIcon(name: string, flames: number) {
     const icons = flameButton.querySelectorAll<SVGElement>('#flame-button svg');
+    const initialFlamesP = parseInt(flameButton.getAttribute('data-initial-flames') ?? '0', 10);
+    const initialFlames = isNaN(initialFlamesP) ? 0 : initialFlamesP;
+
+    const numFlamesEl = document.getElementById('num-flames');
+    if (numFlamesEl) {
+      numFlamesEl.innerText = (initialFlames + flames).toString();
+    }
+
     icons.forEach((icon) => {
       if (icon.id === name) {
         icon.style.display = 'block';

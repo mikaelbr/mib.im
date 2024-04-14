@@ -7,7 +7,6 @@ import Header from '@/components/layout/Header.astro';
 import ThemeProvider from '@/components/ThemeProvider.astro';
 
 import { siteConfig } from '@/site-config';
-import IdProvider from '@/components/IdProvider.astro';
 
 interface Props {
   meta: SiteMeta;
@@ -16,6 +15,23 @@ interface Props {
 const {
   meta: { articleDate, description = siteConfig.description, ogImage, title },
 } = Astro.props;
+
+// Only used to remember Flames
+let storedId = Astro.cookies.get('id')?.value ?? undefined;
+
+if (!storedId) {
+  storedId = `${Math.random().toString(36).substring(7)}-${Math.random().toString(36).substring(7)}`;
+  Astro.cookies.set('id', storedId, {
+    maxAge: 60 * 60 * 24 * 365,
+    secure: true,
+    path: '/',
+    expires: new Date(Date.now() + 60 * 60 * 24 * 365),
+    encode: (val: string) => val,
+    domain: process.env.NODE_ENV == 'development' ? 'localhost' : 'mib.im',
+    sameSite: 'lax',
+    httpOnly: true,
+  });
+}
 ---
 
 <html lang={siteConfig.lang} class=''>
@@ -23,9 +39,8 @@ const {
     <BaseHead articleDate={articleDate} description={description} ogImage={ogImage} title={title} />
   </head>
 
-  <body class='flex justify-center bg-background'>
+  <body class='flex justify-center bg-background' data-id={storedId}>
     <ThemeProvider />
-    <IdProvider />
     <main
       class='flex min-h-screen w-screen max-w-[60rem] flex-col items-center px-6 pb-10 pt-7 font-satoshi text-[0.92rem] leading-relaxed sm:px-10 lg:px-10'
     >
