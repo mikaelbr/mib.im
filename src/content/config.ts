@@ -28,6 +28,7 @@ const post = defineCollection({
         })
         .optional(),
       draft: z.boolean().default(false),
+      lang: z.union([z.literal('en'), z.literal('no')]).default('en'),
       external: z.string().startsWith('https://').optional(),
       tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
       ogImage: z.string().optional(),
