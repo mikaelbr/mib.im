@@ -1,0 +1,26 @@
+---
+type Props = {
+  title?: string;
+};
+
+const { title } = Astro.props;
+---
+
+<div class='mx-auto my-10 max-w-2xl'>
+  <div
+    class='relative flex h-11 w-full items-center justify-start space-x-1.5 rounded-t-lg bg-gray-900 px-3'
+  >
+    <span class='h-3 w-3 rounded-full bg-red-400'></span>
+    <span class='h-3 w-3 rounded-full bg-yellow-400'></span>
+    <span class='h-3 w-3 rounded-full bg-green-400'></span>
+
+    {
+      title && (
+        <span class=' absolute left-0 right-0 top-4 text-center font-mono text-xs'>{title}</span>
+      )
+    }
+  </div>
+  <div class='min-h-32 w-full border-t-0 bg-gray-700 p-4'>
+    <slot />
+  </div>
+</div>

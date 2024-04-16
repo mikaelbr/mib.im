@@ -6,6 +6,9 @@ tags: ['astro', 'typescript', 'astro db']
 draft: true
 ---
 
+import Flame from '@/components/flame/Flame.astro';
+import DemoContent from '@/components/DemoContent.astro';
+
 Astro is a fantastic tool for creating content driven web pages such as blogs, info pages,
 documentation pages etc. In fact,
 [this very blog is created in a very short amount of time](https://github.com/mikaelbr/mib.im) using
@@ -33,7 +36,13 @@ It will work something like this:
 3. On a blog post we'll see total flames for a post on initial load.
 4. If you are a returning reader you can update your flames (resetting or increasing).
 
-You can test it out at the end of this post!
+Test it out here:
+
+<DemoContent title='flame-demo.ts'>
+
+<Flame slug='demo-1' />
+
+</DemoContent>
 
 ## The Component
 

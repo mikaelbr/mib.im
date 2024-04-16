@@ -1,3 +1,10 @@
 {
-  "tailwindCSS.rootFontSize": 16
+  "tailwindCSS.rootFontSize": 16,
+  "grammarly.selectors": [
+    {
+      "language": "markdown",
+      "scheme": "file",
+      "pattern": "src/content/post/a-no-pressure-blog.md"
+    }
+  ]
 }
