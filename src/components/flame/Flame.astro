@@ -30,7 +30,9 @@ const numFlames = flames?.flameSum ?? 0;
 <div class='flex items-center gap-2 px-4 py-8'>
   <button
     id='flame-button'
-    class={cn('inline-flex items-center gap-x-1 text-2xl rounded-3xl transition-all')}
+    class={cn(
+      'inline-flex items-center gap-x-1 text-2xl rounded-3xl transition-all hover:opacity-75 active:opacity-60',
+    )}
     aria-label='Flame this post'
     data-slug={slug}
     data-initial-flames={numFlames - myFlames}
