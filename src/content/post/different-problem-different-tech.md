@@ -1,5 +1,5 @@
 ---
-title: 'Web app vs Content-driven - different problem, different tech'
+title: 'Web app vs Content-driven'
 publishDate: '22 April 2024'
 description:
   'There is no use in pretending that we all solve the same problem. And different problems actually
