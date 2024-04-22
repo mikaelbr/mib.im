@@ -20,6 +20,11 @@
       "language": "markdown",
       "scheme": "file",
       "pattern": "src/content/post/visitor-pattern-for-everyday-use.md"
+    },
+    {
+      "language": "markdown",
+      "scheme": "file",
+      "pattern": "src/content/post/different-problem-different-tech.md"
     }
   ]
 }
