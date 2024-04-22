@@ -2,9 +2,8 @@
 title: 'Web app vs Content-driven'
 publishDate: '22 April 2024'
 description:
-  'There is no use in pretending that we all solve the same problem. And different problems actually
-  require different solutions. This also goes for frontend technology and especially when it comes
-  to if your system is a web app or content-driven web page.'
+  "Don\'t pretend we all solve the same problem. Different problems require different
+  solutions especially when it comes to web apps and content-driven web page."
 tags: ['technology', 'frontend']
 draft: true
 ---
