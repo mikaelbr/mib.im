@@ -110,14 +110,14 @@ const numFlames = flames?.flameSum ?? 0;
     showIcon(rating[0], value);
     timer = setInterval(function () {
       value = Math.min(value + 1, rating.length - 1);
-      const icon = rating[value];
-      showIcon(icon, value);
+      showIcon(rating[value], value);
     }, INCREASE_TICK_MS);
   });
   flameButton.addEventListener('mouseup', async (e) => {
     if (!(e.currentTarget instanceof Element)) return;
     const slug = e.currentTarget.getAttribute('data-slug') ?? '';
 
+    // fire and forget. Let user think they have updated flames even if it fails
     postValue(slug, value);
 
     // reset

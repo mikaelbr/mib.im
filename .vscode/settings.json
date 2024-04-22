@@ -5,6 +5,21 @@
       "language": "markdown",
       "scheme": "file",
       "pattern": "src/content/post/a-no-pressure-blog.md"
+    },
+    {
+      "language": "markdown",
+      "scheme": "file",
+      "pattern": "src/content/post/visitor-pattern.md"
+    },
+    {
+      "language": "markdown",
+      "scheme": "file",
+      "pattern": "src/content/post/a-no-pressure-blog/index.md"
+    },
+    {
+      "language": "markdown",
+      "scheme": "file",
+      "pattern": "src/content/post/visitor-pattern-for-everyday-use.md"
     }
   ]
 }

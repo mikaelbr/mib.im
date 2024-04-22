@@ -42,7 +42,7 @@ list of credits._
 
   <div class="mx-auto mb-4 w-32 rounded-3xl overflow-clip">
 
-![Ironic but yet non-ironic self-portrait of Mikael Brevik](./mikael.png)
+![Ironic yet non-ironic self-portrait of Mikael Brevik](./mikael.png)
 
   </div>
 

@@ -46,7 +46,197 @@ Test it out here:
 
 ## The Component
 
-TBA
+Lets start with a quick reminder on how Astro components are created and how they
+work. Astro components are written in `.astro` files and are structured like this:
+
+```astro title="basic-astro-component.astro"
+---
+// Setup with things happening on the server.
+// All serializable variables defined here can be used below the `---` right under here.
+const myVariable = 'Hello, World';
+---
+<div>
+   <h1>{myVariable}</h1>
+   <p>
+      This is the place components are defined as
+      something similar to JSX. Content here is static and rendered
+      on the server.
+   </p>
+</div>
+
+<script>
+  // This code will run on the client side but is bundled and you
+  // can import libraries and do other things you would do in a regular
+  // module that is processed by bundlers.
+
+  // It is important to note that this section does not have any access
+  // to the variables defined above the `---` of the component. So it cannot 
+  // communicate with the server side or variables there-in.
+</script>
+```
+
+Using this structure we can create a component that renders a button with flame icons,
+shows data from a database and updates the database when the user interacts with
+the button.
+
+```astro title="Flame.astro"
+
+---
+import { cn } from '@/utils';
+import { Icon } from 'astro-icon/components';
+import { Flames, and, db, eq, sum } from 'astro:db';
+
+const { slug } = Astro.props;
+
+let userId = Astro.cookies.get('id')?.value ?? '';
+
+const myFlamesQ = await db
+  .select({
+    flames: Flames.flames,
+  })
+  .from(Flames)
+  .where(and(eq(Flames.slug, slug), eq(Flames.genId, userId)))
+  .get();
+
+const flames = await db
+  .select({
+    flameSum: sum(Flames.flames).mapWith(parseInt),
+  })
+  .from(Flames)
+  .where(eq(Flames.slug, slug))
+  .get();
+
+const myFlames = myFlamesQ?.flames ?? 0;
+const numFlames = flames?.flameSum ?? 0;
+---
+
+<div class='flex items-center gap-2 px-4 py-8'>
+  <button
+    id='flame-button'
+    class={cn(
+      'inline-flex items-center gap-x-1 text-2xl rounded-3xl transition-all hover:opacity-75 active:opacity-60',
+    )}
+    aria-label='Flame this post'
+    data-slug={slug}
+    data-initial-flames={numFlames - myFlames}
+    data-initial-my-flames={myFlames}
+  >
+    <Icon
+      id='ph:fire-simple-light'
+      name='ph:fire-simple-light'
+      style={{ display: myFlames == 0 ? 'block' : 'none' }}
+    />
+    <Icon
+      id='ph:fire-simple'
+      name='ph:fire-simple'
+      style={{ display: myFlames == 1 ? 'block' : 'none' }}
+    />
+    <Icon
+      id='ph:fire-simple-bold'
+      name='ph:fire-simple-bold'
+      style={{ display: myFlames == 2 ? 'block' : 'none' }}
+    />
+    <Icon
+      id='ph:fire-simple-duotone'
+      name='ph:fire-simple-duotone'
+      style={{ display: myFlames == 3 ? 'block' : 'none' }}
+    />
+    <Icon
+      id='ph:fire-simple-fill'
+      name='ph:fire-simple-fill'
+      style={{ display: myFlames == 4 ? 'block' : 'none' }}
+    />
+  </button>
+
+  <span title={`${numFlames} flames for this post`}
+    ><span id='num-flames'>{numFlames}</span> flames</span
+  >
+</div>
+
+<script>
+  const userId = document.body.getAttribute('data-id');
+
+  const rating = [
+    'ph:fire-simple-light',
+    'ph:fire-simple',
+    'ph:fire-simple-bold',
+    'ph:fire-simple-duotone',
+    'ph:fire-simple-fill',
+  ];
+
+  function postValue(slug: string, flames: number) {
+    return fetch('/api/flames.json', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        slug,
+        userId,
+        flames,
+      }),
+    });
+  }
+
+  const INCREASE_TICK_MS = 300;
+
+  let timer: NodeJS.Timeout | undefined = undefined;
+  let value = 1;
+
+  const flameButton = document.getElementById('flame-button')!;
+  const initialFlames = parseInt(flameButton.getAttribute('data-initial-my-flames') ?? '0', 10);
+  if (initialFlames > 0) {
+    value = 0;
+  }
+
+  flameButton.addEventListener('mousedown', () => {
+    showIcon(rating[0], value);
+    timer = setInterval(function () {
+      value = Math.min(value + 1, rating.length - 1);
+      showIcon(rating[value], value);
+    }, INCREASE_TICK_MS);
+  });
+  flameButton.addEventListener('mouseup', async (e) => {
+    if (!(e.currentTarget instanceof Element)) return;
+    const slug = e.currentTarget.getAttribute('data-slug') ?? '';
+
+    // fire and forget. Let user think they have updated flames even if it fails
+    postValue(slug, value);
+
+    // reset
+    clearTimeout(timer);
+    timer = undefined;
+    value = 0;
+  });
+
+  flameButton.addEventListener('mouseleave', () => {
+    // Ignore setting flames
+    clearTimeout(timer);
+    timer = undefined;
+    value = 0;
+  });
+
+  function showIcon(name: string, flames: number) {
+    const icons = flameButton.querySelectorAll<SVGElement>('#flame-button svg');
+    const initialFlamesP = parseInt(flameButton.getAttribute('data-initial-flames') ?? '0', 10);
+    const initialFlames = isNaN(initialFlamesP) ? 0 : initialFlamesP;
+
+    const numFlamesEl = document.getElementById('num-flames');
+    if (numFlamesEl) {
+      numFlamesEl.innerText = (initialFlames + flames).toString();
+    }
+
+    icons.forEach((icon) => {
+      if (icon.id === name) {
+        icon.style.display = 'block';
+      } else {
+        icon.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+```
 
 ## The API
 
