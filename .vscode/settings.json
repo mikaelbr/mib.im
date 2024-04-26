@@ -25,6 +25,11 @@
       "language": "markdown",
       "scheme": "file",
       "pattern": "src/content/post/different-problem-different-tech.md"
+    },
+    {
+      "language": "markdown",
+      "scheme": "file",
+      "pattern": "src/content/post/astro-helpers.md"
     }
   ]
 }
