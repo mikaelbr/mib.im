@@ -4,7 +4,7 @@ import { getAllPosts } from '@/utils';
 
 const { slug } = Astro.params;
 
-const allPost = await getAllPosts();
+const allPost = await getAllPosts(true);
 
 const entry = allPost.find((p) => p.slug === slug);
 
