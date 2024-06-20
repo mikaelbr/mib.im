@@ -1,11 +1,15 @@
 import type { CollectionEntry } from 'astro:content';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntryBySlug } from 'astro:content';
 
 /** Note: this function filters out draft posts based on the environment */
 export async function getAllPosts(withDrafts: boolean = false) {
   return await getCollection('post', ({ data }) => {
     return import.meta.env.PROD && withDrafts ? data.draft !== true : true;
   });
+}
+
+export async function getPost(slug: string) {
+  return getEntryBySlug('post', slug);
 }
 
 export function sortMDByDate(

@@ -17,7 +17,7 @@ import { getPodcastData } from 'src/utils/pod';
 import { getAllPresentations } from 'src/utils/presentation';
 
 const MAX_POSTS = 10;
-const allPosts = await getAllPosts();
+const allPosts = await getAllPosts(true);
 const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
 
 const MAX_PRESENTATIONS = 4;

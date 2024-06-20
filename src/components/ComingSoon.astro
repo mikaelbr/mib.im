@@ -1,0 +1,66 @@
+---
+import PostPreview from '@/components/blog/PostPreview.astro';
+import PageLayout from '../layouts/BaseLayout.astro';
+
+import { Image } from 'astro:assets';
+import mikaelBrevik from '../assets/mikaelbrevik-oops.jpg';
+
+import Button from '@/components/Button.astro';
+import { getAllPosts, sortMDByDate } from '@/utils';
+import { Icon } from 'astro-icon/components';
+import type { CollectionEntry } from 'astro:content';
+
+type Props = {
+  post: CollectionEntry<'post'>;
+};
+
+const { post } = Astro.props;
+
+const MAX_POSTS = 3;
+const allPosts = await getAllPosts();
+const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
+---
+
+<PageLayout meta={{ title: 'Coming Soon' }}>
+  <div class='flex w-full flex-col gap-y-10 py-24'>
+    <div class='flex w-full flex-col gap-y-10 py-24'>
+      <section class='flex flex-col items-center'>
+        <Image
+          src={mikaelBrevik}
+          alt='Photo of Mikael brevik'
+          class='h-56 w-auto rounded-full bg-[#98fff3] p-1'
+          loading='eager'
+          widths={[120, 240, 360]}
+          sizes={`(max-width: 240px) 120px, (max-width: 360px) 240px, 360px`}
+        />
+      </section>
+
+      <div class='text-center'>
+        <h1 class='text-3xl font-bold'>Coming soon</h1>
+        <p>Blogpost "{post.data.title}" is in the works...</p>
+        <p>Estimated finish time is <code>n + 1</code> where <code>n = today</code>.</p>
+      </div>
+    </div>
+
+    {
+      allPostsByDate.length > 0 && (
+        <div>
+          <p>Until then, why don't you read some of these small nuggets?</p>
+          <ul class='flex flex-col gap-y-2'>
+            {allPostsByDate.map((p) => (
+              <li class='flex flex-col gap-x-2 sm:flex-row'>
+                <PostPreview as='div' post={p} />
+              </li>
+            ))}
+          </ul>
+
+          <div>
+            <Button href='/blog' title='See all'>
+              <Icon name='ph:arrow-right-bold' slot='icon-after' />
+            </Button>
+          </div>
+        </div>
+      )
+    }
+  </div>
+</PageLayout>

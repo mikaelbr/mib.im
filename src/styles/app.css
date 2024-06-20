@@ -72,6 +72,10 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  code {
+    @apply rounded-sm bg-indigo-950 p-[0.125rem] font-mono text-card-foreground;
+  }
 }
 
 @keyframes appear {

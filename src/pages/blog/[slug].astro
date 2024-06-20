@@ -1,20 +1,27 @@
 ---
+import ComingSoon from '@/components/ComingSoon.astro';
 import PostLayout from '@/layouts/BlogPost.astro';
-import { getAllPosts } from '@/utils';
+import { getPost } from '@/utils';
 
 const { slug } = Astro.params;
 
-const allPost = await getAllPosts(true);
-
-const entry = allPost.find((p) => p.slug === slug);
+const entry = await getPost(slug!);
 
 if (!entry) {
   return Astro.redirect('/404');
 }
 
+const showComingSoon = import.meta.env.PROD && entry.data.draft;
+
 const { Content } = await entry.render();
 ---
 
-<PostLayout post={entry}>
-  <Content />
-</PostLayout>
+{
+  showComingSoon ? (
+    <ComingSoon post={entry} />
+  ) : (
+    <PostLayout post={entry}>
+      <Content />
+    </PostLayout>
+  )
+}
