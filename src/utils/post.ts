@@ -4,7 +4,7 @@ import { getCollection, getEntryBySlug } from 'astro:content';
 /** Note: this function filters out draft posts based on the environment */
 export async function getAllPosts(withDrafts: boolean = false) {
   return await getCollection('post', ({ data }) => {
-    return import.meta.env.PROD && withDrafts ? data.draft !== true : true;
+    return withDrafts ? true : data.draft !== true;
   });
 }
 
