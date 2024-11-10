@@ -8,12 +8,6 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const {
-  data: { description, ogImage, publishDate, title, updatedDate },
-  slug,
-} = post;
-
-const { headings } = await post.render();
 ---
 
 <div class='mt-8 gap-x-10 lg:flex lg:items-start'>
