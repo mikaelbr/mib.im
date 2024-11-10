@@ -10,6 +10,7 @@ import expressiveCode from 'astro-expressive-code';
 import { expressiveCodeOptions } from './src/site.config';
 import icon from 'astro-icon';
 import vercel from '@astrojs/vercel/serverless';
+import embeds from 'astro-embed/integration';
 
 import db from '@astrojs/db';
 
@@ -22,6 +23,7 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     sitemap(),
+    embeds(),
     mdx(),
     icon(),
     db(),
