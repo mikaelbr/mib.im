@@ -1,0 +1,27 @@
+---
+import ComingSoon from '@/components/ComingSoon.astro';
+import PostLayout from '@/layouts/BlogPost.astro';
+import { getPost } from '@/utils';
+
+const { slug } = Astro.params;
+
+const entry = await getPost(`ravioli/${slug!}`);
+
+if (!entry) {
+  return Astro.redirect('/404');
+}
+
+const showComingSoon = import.meta.env.PROD && entry.data.draft;
+
+const { Content } = await entry.render();
+---
+
+{
+  showComingSoon ? (
+    <ComingSoon post={entry} />
+  ) : (
+    <PostLayout post={entry}>
+      <Content />
+    </PostLayout>
+  )
+}

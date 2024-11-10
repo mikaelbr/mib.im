@@ -1,15 +1,27 @@
 import type { CollectionEntry } from 'astro:content';
-import { getCollection, getEntryBySlug } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 
 /** Note: this function filters out draft posts based on the environment */
 export async function getAllPosts(withDrafts: boolean = false) {
-  return await getCollection('post', ({ data }) => {
-    return withDrafts ? true : data.draft !== true;
+  // console.log(await getCollection('post'));
+  return await getCollection('post', ({ data, slug }) => {
+    const draft = withDrafts ? true : data.draft !== true;
+    const notPrefixed = !slug.includes('/');
+    return draft && notPrefixed;
+  });
+}
+
+export async function getAllPrefixed(prefix: string, withDrafts: boolean = false) {
+  // console.log(await getCollection('post'));
+  return await getCollection('post', ({ data, slug }) => {
+    const draft = withDrafts ? true : data.draft !== true;
+    const isPrefixed = slug.startsWith(prefix);
+    return draft && isPrefixed;
   });
 }
 
 export async function getPost(slug: string) {
-  return getEntryBySlug('post', slug);
+  return getEntry('post', slug);
 }
 
 export function sortMDByDate(

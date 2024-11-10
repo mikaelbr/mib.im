@@ -1,0 +1,28 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import BlogHero from '@/components/blog/Hero.astro';
+
+interface Props {
+  post: CollectionEntry<'post'>;
+}
+
+const { post } = Astro.props;
+const {
+  data: { description, ogImage, publishDate, title, updatedDate },
+  slug,
+} = post;
+
+const { headings } = await post.render();
+---
+
+<div class='mt-8 gap-x-10 lg:flex lg:items-start'>
+  <article class='flex-grow break-words' data-pagefind-body>
+    <div id='blog-hero'><BlogHero content={post} /></div>
+    <div
+      class='prose prose-base prose-zinc mt-12 text-muted-foreground dark:prose-invert prose-headings:font-medium prose-headings:text-foreground prose-headings:before:absolute prose-headings:before:-ms-4 prose-th:before:content-none'
+    >
+      <slot />
+    </div>
+  </article>
+</div>

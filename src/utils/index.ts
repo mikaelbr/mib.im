@@ -1,5 +1,12 @@
 export { cn } from './tailwind';
-export { getPost, getAllPosts, sortMDByDate, getUniqueTags, getUniqueTagsWithCount } from './post';
+export {
+  getPost,
+  getAllPrefixed,
+  getAllPosts,
+  sortMDByDate,
+  getUniqueTags,
+  getUniqueTagsWithCount,
+} from './post';
 export { getFormattedDate } from './date';
 export { generateToc } from './generateToc';
 export type { TocItem } from './generateToc';
